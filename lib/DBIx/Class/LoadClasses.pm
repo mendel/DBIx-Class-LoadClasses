@@ -31,7 +31,7 @@ our $VERSION = '0.01';
 
   __PACKAGE__->load_components(qw/ LoadClasses /);
 
-  __PACKAGE__->result_source_groups(
+  __PACKAGE__->define_result_source_groups(
     media  => [qw/ CD Track /],
     people => [qw/ Artist Publisher /],
   );
@@ -77,7 +77,7 @@ script that the script actually uses, that way you save startup time and memory
 
 =head1 EXPORTS
 
-None. The import list is abused to load result source classes (see L<import>).
+None. The import list is abused to load result source classes (see L</import>).
 
 =head1 METHODS
 
@@ -132,9 +132,9 @@ sub import {
 }
 
 
-=head2 result_source_groups
+=head2 define_result_source_groups
 
-  $schema_class->result_source_groups(group_name => \@source_names, ...);
+  $schema_class->define_result_source_groups(group_name => \@source_names, ...);
 
 Registers zero or more result source groups.
 
@@ -156,7 +156,7 @@ C</load_classes> is called with C<@default> instead.
 
 Examples:
 
-  __PACKAGE__->result_source_groups(
+  __PACKAGE__->define_result_source_groups(
     user_stuff    => [qw/ User Address Account /],
     book_stuff    => [qw/ Book Volume Author /],
     library_stuff => [qw/ @user_stuff @book_stuff Borrowing /],
@@ -164,7 +164,7 @@ Examples:
 
 =cut
 
-sub result_source_groups {
+sub define_result_source_groups {
   my ($class, %groups) = (shift, @_);
 
   while (my ($group_name, $sources) = each %groups) {
@@ -178,8 +178,8 @@ sub result_source_groups {
   $schema_class->load_classes(@sources);
 
 Overridden from L<DBIx::Class::Schema/load_classes>. Resolves the result source
-groups (names of groups defined in L</result_source_groups> prefixed with C<@>
-signs) in C<@sources> before calling the original method.
+groups (names of groups defined in L</define_result_source_groups> prefixed
+with C<@> signs) in C<@sources> before calling the original method.
 
 =cut
 

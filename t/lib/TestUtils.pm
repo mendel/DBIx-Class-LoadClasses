@@ -29,7 +29,7 @@ Manufacturer.
 The L<DBIx::Class::LoadClasses> component is loaded into the schema.
 
 If C<%result_source_groups> is defined, calls C<<
-__PACKAGE__->result_source_groups(%result_source_groups >>.
+__PACKAGE__->define_result_source_groups(%result_source_groups >>.
 
 =cut
 
@@ -46,7 +46,7 @@ sub create_schema {
     ->execute($schema_name, 'LoadClasses');
 
   if ($arg{result_source_groups}) {
-    $schema_name->meta->find_method_by_name('result_source_groups')
+    $schema_name->meta->find_method_by_name('define_result_source_groups')
       ->execute($schema_name, %{ $arg{result_source_groups} });
   }
 
